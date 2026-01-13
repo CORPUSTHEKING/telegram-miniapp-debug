@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Telegram Mini App – initData Dump</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: monospace;
+      background: #0b0b0b;
+      color: #e0e0e0;
+      padding: 1rem;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    h1 { color: #7dd3fc; }
+    .err { color: #fb7185; }
+  </style>
+</head>
+<body>
+<h1>Telegram Mini App initData Diagnostics</h1>
+
+<div id="output">Loading…</div>
+
+<script>
+(function () {
+  const out = document.getElementById('output');
+
+  try {
+    if (!window.Telegram || !Telegram.WebApp) {
+      out.innerHTML = '<span class="err">Telegram.WebApp not found</span>';
+      return;
+    }
+
+    const tg = Telegram.WebApp;
+
+    tg.ready();
+
+    const dump = {
+      initData: tg.initData,
+      initDataUnsafe: tg.initDataUnsafe,
+      version: tg.version,
+      platform: tg.platform,
+      colorScheme: tg.colorScheme,
+      isExpanded: tg.isExpanded,
+    };
+
+    out.textContent = JSON.stringify(dump, null, 2);
+  } catch (e) {
+    out.innerHTML = '<span class="err">' + e.stack + '</span>';
+  }
+})();
+</script>
+</body>
+</html>
